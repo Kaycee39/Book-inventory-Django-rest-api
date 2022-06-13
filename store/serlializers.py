@@ -22,4 +22,4 @@ class BookSerializer(serializers.ModelSerializer):
 class StockSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stock
-        fields =('book_id','quantity','status',)
+        fields =('book_id','quantity',)

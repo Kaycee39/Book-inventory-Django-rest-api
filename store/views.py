@@ -1,6 +1,7 @@
 
 #--------------------------------------------------------------------------
 from pyexpat import model
+from telnetlib import STATUS
 from django.shortcuts import get_object_or_404, render
 
 # Create your views here.
@@ -48,6 +49,17 @@ class view_books(generics.ListAPIView):
     
     
     def post(self, request, format=None):
+        quantity = request.data['quantity']
+        if quantity <= 0:
+                    status = "out of stock"
+        elif quantity <= 5 and quantity >= 1:
+                    status ="critical"
+        elif quantity <=10 and quantity >= 5:
+                    status ="bad"
+        else:
+                    status ="good"
+
+        request.data['status'] = status
         serializer = BookSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -72,6 +84,17 @@ class BookDetail(APIView):
 
     def put(self, request, pk, format=None):
         books = self.get_object(pk)
+        quantity = request.data['quantity']
+        if quantity <= 0:
+                    status = "out of stock"
+        elif quantity <= 5 and quantity >= 1:
+                    status ="critical"
+        elif quantity <=10 and quantity >= 5:
+                    status ="bad"
+        else:
+                    status ="good"
+
+        request.data['status'] = status
         serializer = BookSerializer(books, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -134,30 +157,3 @@ class StockDetail(APIView):
 
 
 #----------------------------------------------------------------------
-'''def post(self, request, format=None):
-            serializer = StockSerializer(data=request.data)
-            serializer.is_valid(raise_exception = True)
-            self.perform_create(serializer)
-            if Stock.objects.exists():
-                stocks =Stock.objects.get()
-                stocks.quantity += 1
-                stocks.save()
-            else:
-                Stock.objects.create(quantity = 1)
-            
-            return Response(serializer.data, status=status.HTTP_201_CREATED)'''
-
-
-'''def put(self, request, pk, format=None):
-        stocks = self.get_object(pk)
-        serializer = StockSerializer(stocks, data=request.data)
-        serializer.is_valid(raise_exception = True)
-        self.perform_create(serializer)
-        if Stock.objects.exists():
-            stocks =Stock.objects.get()
-            stocks.quantity -= 1
-            stocks.save()
-        else:
-            Stock.objects.create(quantity = 1)
-            
-        return Response(serializer.data, status=status.HTTP_201_CREATED)'''

@@ -30,32 +30,15 @@ class Book(models.Model):
     def __str__(self):
         return self.author_id.firstName
 
-    '''@property
-    def is_out_of_stock(self):
-        return self.quantity > 0 '''
 
 
 
-    '''@property
-    def status(self):
-            if self.quantity<=0:
-                stock_status = "out of stock"
-            elif self.quantity<=5 and self.quantity>=1:
-                stock_status ="critical"
-            elif self.quantity<=10 and self.quantity>=5:
-                stock_status ="bad"
-            else:
-                stock_status ="good"
 
-            return stock_status'''
+    
 
 class Stock (models.Model):
-    CHOICES =(('out of stock','out of stock'),
-    ('critical','critical'),
-    ('good','good'),
-    ('bad','bad'))
     book_id = models.ForeignKey(Book, on_delete = models.SET_NULL, related_name = "books", null=True)
-    status = models.CharField(max_length=255, choices=CHOICES)
+    status = models.CharField(max_length=255)
     date_added = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
