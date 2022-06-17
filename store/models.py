@@ -11,9 +11,6 @@ class Author(models.Model):
     dob = models.DateField(default = None)
 
 
-    
-    
-
     def __str__(self):
         return self.firstName
 

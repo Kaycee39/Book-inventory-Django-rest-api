@@ -21,5 +21,6 @@ class BookSerializer(serializers.ModelSerializer):
 
 class StockSerializer(serializers.ModelSerializer):
     class Meta:
+        # status = serializers.ReadOnlyField()
         model = Stock
-        fields =('book_id','quantity',)
+        fields =('book_id','quantity','status')
